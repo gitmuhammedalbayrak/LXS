@@ -1,0 +1,132 @@
+﻿@page "/Books"
+@using Microsoft.EntityFrameworkCore
+@using LibX.Components.Model
+@using LibX.Data
+@inject BookDbContext DbContext
+
+<h3>Books</h3>
+
+
+<!-- Kitap Listesi -->
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Publisher</th>
+            <th>Category</th>
+            <th>Estimated Value</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var book in books)
+        {
+            <tr>
+                <td>@book.Title</td>
+                <td>@book.Author</td>
+                <td>@book.Publisher</td>
+                <td>@book.Category</td>
+                <td>@book.EstimatedValue</td>
+                <td>
+                    <button class="btn btn-danger" @onclick="() => DeleteBook(book.Id)">Delete</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Yeni Kitap Ekle Butonu -->
+<button class="btn btn-primary" @onclick="OpenPopup">Add New Book</button>
+
+<!-- Kitap Ekleme Formu için Popup -->
+@if (isPopupVisible)
+{
+    <div class="modal fade show" tabindex="-1" style="display: block; background-color: rgba(0,0,0,0.5);">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Book</h5>
+                    <button type="button" class="close" @onclick="ClosePopup">×</button>
+                </div>
+                <div class="modal-body">
+                    <EditForm Model="newBook" OnValidSubmit="AddBook">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+
+                        <div class="form-group">
+                            <label>Title</label>
+                            <InputText @bind-Value="newBook.Title" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label>Author</label>
+                            <InputText @bind-Value="newBook.Author" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label>Publisher</label>
+                            <InputText @bind-Value="newBook.Publisher" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label>Category</label>
+                            <InputText @bind-Value="newBook.Category" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label>Estimated Value</label>
+                            <InputNumber @bind-Value="newBook.EstimatedValue" class="form-control" />
+                        </div>
+
+                        <button type="submit" class="btn btn-success">Add Book</button>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private List<Book> books = new List<Book>();
+    private Book newBook = new Book();
+    private bool isPopupVisible = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Veritabanından kitapları getir
+        books = await DbContext.Books.ToListAsync();
+    }
+
+    private void OpenPopup()
+    {
+        newBook = new Book(); // Yeni bir kitap modeli oluştur
+        isPopupVisible = true; // Popup'ı görünür yap
+    }
+
+    private void ClosePopup()
+    {
+        isPopupVisible = false; // Popup'ı kapat
+    }
+
+    private async Task AddBook()
+    {
+        // Kitabı veritabanına ekle
+        DbContext.Books.Add(newBook);
+        await DbContext.SaveChangesAsync();
+
+        // Kitap listesine yeni kitabı ekle
+        books.Add(newBook);
+
+        // Popup'ı kapat
+        isPopupVisible = false;
+    }
+
+    private async Task DeleteBook(int id)
+    {
+        // Kitabı veritabanından sil
+        var bookToDelete = await DbContext.Books.FindAsync(id);
+        if (bookToDelete != null)
+        {
+            DbContext.Books.Remove(bookToDelete);
+            await DbContext.SaveChangesAsync();
+            books.Remove(bookToDelete); // Listeden de sil
+        }
+    }
+}
