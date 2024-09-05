@@ -2,10 +2,10 @@
 
 #nullable disable
 
-namespace LibX.Migrations.BookDb
+namespace LibX.Data.Migrations.BookDb
 {
     /// <inheritdoc />
-    public partial class UpdateDecimalForEstimatedValue : Migration
+    public partial class MigrationNameForBookDb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

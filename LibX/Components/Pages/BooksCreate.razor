@@ -1,0 +1,117 @@
+﻿@page "/BooksCreate"
+@using Microsoft.EntityFrameworkCore
+@using LibX.Components.Model
+@using LibX.Data
+@inject BookDbContext DbContext
+@inject NavigationManager NavigationManager
+
+<h3>Create a New Book</h3>
+
+<EditForm Model="newBook" OnValidSubmit="CreateBook" FormName="CreateBookForm">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label>Title</label>
+        <InputText @bind-Value="newBook.Title" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Subtitle</label>
+        <InputText @bind-Value="newBook.Subtitle" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Author</label>
+        <InputText @bind-Value="newBook.Author" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Publisher</label>
+        <InputText @bind-Value="newBook.Publisher" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Edition</label>
+        <InputNumber @bind-Value="newBook.Edition" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Page Count</label>
+        <InputNumber @bind-Value="newBook.PageCount" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Barcode</label>
+        <InputText @bind-Value="newBook.Barcode" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>RFID</label>
+        <InputText @bind-Value="newBook.RFID" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Shelf Location</label>
+        <InputText @bind-Value="newBook.ShelfLocation" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Assigned To</label>
+        <InputText @bind-Value="newBook.AssignedTo" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Assigned Date</label>
+        <InputDate @bind-Value="newBook.AssignedDate" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Checkout Date</label>
+        <InputDate @bind-Value="newBook.CheckoutDate" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Return Date</label>
+        <InputDate @bind-Value="newBook.ReturnDate" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Issued By Staff</label>
+        <InputText @bind-Value="newBook.IssuedByStaff" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Condition</label>
+        <InputText @bind-Value="newBook.Condition" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Defects</label>
+        <InputText @bind-Value="newBook.Defects" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Has Backup</label>
+        <InputCheckbox @bind-Value="newBook.HasBackup" />
+    </div>
+    <div class="form-group">
+        <label>Estimated Value</label>
+        <InputNumber @bind-Value="newBook.EstimatedValue" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Category</label>
+        <InputText @bind-Value="newBook.Category" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Usage Type</label>
+        <InputText @bind-Value="newBook.UsageType" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Times Exchanged</label>
+        <InputNumber @bind-Value="newBook.TimesExchanged" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-success">Create</button>
+    <button type="button" class="btn btn-secondary" @onclick="Cancel">Cancel</button>
+</EditForm>
+
+@code {
+    private Book newBook = new Book();
+
+    private async Task CreateBook()
+    {
+        DbContext.Books.Add(newBook);
+        await DbContext.SaveChangesAsync();
+        NavigationManager.NavigateTo("/Books");
+    }
+
+    private void Cancel()
+    {
+        NavigationManager.NavigateTo("/Books");
+    }
+}

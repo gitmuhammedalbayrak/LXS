@@ -29,5 +29,4 @@ namespace LibX.Components.Model
         public string? UsageType { get; set; } // Kullanım Türü
         public int TimesExchanged { get; set; }
     }
-
 }

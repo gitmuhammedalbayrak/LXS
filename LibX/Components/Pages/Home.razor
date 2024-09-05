@@ -2,6 +2,44 @@
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<div class="container mt-5">
+    <div class="jumbotron text-center">
+        <h1 class="display-4">Welcome to LibX!</h1>
+        <p class="lead">This is your new application where you can manage and explore your books collection easily.</p>
+        <hr class="my-4" />
+        <p>To get started, you can add new books, view the list, or manage your account.</p>
+        <a class="btn btn-primary btn-lg" href="/Books" role="button">View Books</a>
+    </div>
 
-Welcome to your new app.
+    <div class="row mt-5">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Books Collection</h5>
+                    <p class="card-text">Browse your books collection, add new books, or delete existing ones.</p>
+                    <a href="/Books" class="btn btn-outline-primary">Go to Books</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Account Management</h5>
+                    <p class="card-text">Manage your personal account settings, login, or register for a new account.</p>
+                    <a href="/Auth" class="btn btn-outline-primary">Manage Account</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">About This App</h5>
+                    <p class="card-text">Learn more about the features and functionality of the LibX application.</p>
+                    <a href="/About" class="btn btn-outline-primary">Learn More</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
